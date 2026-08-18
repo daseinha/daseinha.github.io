@@ -1,12 +1,687 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Engineer // Dark Cyber Portfolio</title>
+  
+  <!-- Fonts & Icons & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Pretendard:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', 'sans-serif'],
+            orbitron: ['Orbitron', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 확실한 딥 다크 배경 강제 지정 */
+    html, body {
+      background-color: #030712 !important;
+      color: #f3f4f6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 사이버 그리드 패턴 - 어두운 배경 대비 */
+    .cyber-grid {
+      background-color: #030712;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+    }
+
+    /* 은은하고 선명한 텍스트 네온 글로우 */
+    .neon-text-cyan {
+      color: #00f0ff;
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.6), 0 0 25px rgba(0, 240, 255, 0.3);
+    }
+    
+    .neon-text-purple {
+      color: #e879f9;
+      text-shadow: 0 0 12px rgba(217, 70, 239, 0.6), 0 0 25px rgba(217, 70, 239, 0.3);
+    }
+
+    /* 딥 다크 글래스 카드 */
+    .dark-neon-card {
+      background: rgba(10, 15, 30, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.18);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dark-neon-card:hover {
+      border-color: rgba(0, 240, 255, 0.6);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.2), inset 0 0 10px rgba(0, 240, 255, 0.05);
+      transform: translateY(-4px);
+    }
+
+    /* 코너 테크 액센트 */
+    .dark-neon-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid #00f0ff;
+      border-left: 2px solid #00f0ff;
+    }
+    .dark-neon-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid #d946ef;
+      border-right: 2px solid #d946ef;
+    }
+
+    /* 파티클 캔버스 */
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
 </head>
-<body>
-    <h1>안녕하세요 새싹 서초 3기 Erto 입니다.</h1>
-    <img src="https://mblogthumb-phinf.pstatic.net/MjAyNDA2MDFfNTAg/MDAxNzE3MjIyNTkzMzY0.Cv2LEiV2-rjZdmA264PJyIMyVreCCZk6fwLRJlxWleYg.TyDpm_t_NeJfOLkC6rXSqaLvsZex1BtQvxbJZQ3olbUg.JPEG/%EB%9E%98%EC%84%9C%ED%8C%AC%EB%8D%94_(19).jpg?type=w800" alt="래서판다 몽충몽충">
+<body class="cyber-grid relative selection:bg-cyan-500 selection:text-black">
+
+  <!-- Interactive Particle Background Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Top Cyber HUD Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#030712]/90 backdrop-blur-md border-b border-cyan-500/20">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <!-- HUD Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 rounded-xl border border-cyan-500/40 bg-cyan-950/40 text-cyan-400 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+          <i data-lucide="cpu" class="w-6 h-6 animate-pulse"></i>
+        </div>
+        <div>
+          <span class="font-orbitron font-extrabold text-xl tracking-widest neon-text-cyan">
+            AI_CORE.SYS
+          </span>
+          <p class="text-[10px] font-mono text-cyan-400/80 tracking-widest uppercase flex items-center gap-1.5 mt-0.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE // KERNEL v4.8
+          </p>
+        </div>
+      </div>
+
+      <!-- Sci-Fi Navigation -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-orbitron font-semibold uppercase tracking-wider text-slate-300">
+        <a href="#about" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500">01.</span> About</a>
+        <a href="#skills" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500">02.</span> Tech Stack</a>
+        <a href="#pipeline" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500">03.</span> Pipeline</a>
+        <a href="#projects" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500">04.</span> Projects</a>
+        <a href="#contact" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500">05.</span> Contact</a>
+      </nav>
+
+      <!-- Action -->
+      <div class="flex items-center gap-4">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-950/40 text-emerald-400 text-xs font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> READY TO ENGAGE
+        </div>
+        <a href="#contact" class="px-5 py-2.5 rounded-xl border border-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-orbitron font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+          INITIATE_CONTACT
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="relative z-10 pt-36 pb-24 md:pt-48 md:pb-36 max-w-7xl mx-auto px-6">
+    <div class="text-center relative">
+      
+      <!-- Cyber badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/40 bg-cyan-950/60 text-cyan-300 text-xs font-mono tracking-wider mb-8 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+        <i data-lucide="zap" class="w-3.5 h-3.5 text-cyan-400"></i>
+        <span>NEXT-GEN AI & AUTOMATION ARCHITECT</span>
+      </div>
+
+      <!-- Main Crisp Glow Titles -->
+      <h1 class="font-orbitron tracking-tight leading-none mb-6">
+        <span class="neon-text-cyan text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black block tracking-wider">
+          AI ENGINEER
+        </span>
+        <span class="neon-text-purple text-2xl sm:text-4xl md:text-5xl lg:text-6xl mt-4 block font-extrabold tracking-wide">
+          RAG // AUTOMATION // DATA PIPELINE
+        </span>
+      </h1>
+
+      <p class="text-slate-300 font-sans text-base sm:text-lg max-w-3xl mx-auto leading-relaxed mb-12 font-normal">
+        <span class="text-cyan-400 font-mono font-bold">&gt;</span> 웹 크롤링 및 Vision OCR 기반의 정형/비정형 데이터 수집 및 정제<br class="hidden sm:block">
+        <span class="text-fuchsia-400 font-mono font-bold">&gt;</span> Pinecone Vector RAG 아키텍처 및 n8n 엔드투엔드 비즈니스 자동화 파이프라인 구축
+      </p>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-5 font-orbitron text-xs">
+        <a href="#projects" class="px-8 py-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold tracking-wider transition-all shadow-[0_0_25px_rgba(0,240,255,0.6)] flex items-center gap-2 transform hover:scale-105">
+          <i data-lucide="terminal" class="w-4 h-4"></i> EXECUTE_PROJECTS
+        </a>
+        <a href="#pipeline" class="px-8 py-4 rounded-xl dark-neon-card text-cyan-300 hover:text-white font-bold tracking-wider transition-all flex items-center gap-2">
+          <i data-lucide="network" class="w-4 h-4 text-fuchsia-400"></i> SYSTEM_WORKFLOW
+        </a>
+      </div>
+
+      <!-- Holographic Status Terminal HUD -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-20 text-left font-mono">
+        <div class="dark-neon-card p-5 rounded-xl border-l-4 border-l-cyan-400">
+          <div class="text-[11px] text-cyan-400/90 mb-1 flex items-center justify-between">
+            <span>[VEC_SEARCH]</span>
+            <i data-lucide="database" class="w-3.5 h-3.5 text-cyan-400"></i>
+          </div>
+          <div class="text-lg font-bold font-orbitron text-white">Pinecone RAG</div>
+          <div class="text-xs text-slate-400 mt-1">Hybrid Semantic Index</div>
+        </div>
+
+        <div class="dark-neon-card p-5 rounded-xl border-l-4 border-l-fuchsia-400">
+          <div class="text-[11px] text-fuchsia-400/90 mb-1 flex items-center justify-between">
+            <span>[ORCHESTRATION]</span>
+            <i data-lucide="workflow" class="w-3.5 h-3.5 text-fuchsia-400"></i>
+          </div>
+          <div class="text-lg font-bold font-orbitron text-white">n8n Pipeline</div>
+          <div class="text-xs text-slate-400 mt-1">Automated Event Logic</div>
+        </div>
+
+        <div class="dark-neon-card p-5 rounded-xl border-l-4 border-l-emerald-400">
+          <div class="text-[11px] text-emerald-400/90 mb-1 flex items-center justify-between">
+            <span>[INGESTION]</span>
+            <i data-lucide="scan-line" class="w-3.5 h-3.5 text-emerald-400"></i>
+          </div>
+          <div class="text-lg font-bold font-orbitron text-white">Crawl & OCR</div>
+          <div class="text-xs text-slate-400 mt-1">Vision & Web Parser</div>
+        </div>
+
+        <div class="dark-neon-card p-5 rounded-xl border-l-4 border-l-amber-400">
+          <div class="text-[11px] text-amber-400/90 mb-1 flex items-center justify-between">
+            <span>[RELATIONAL]</span>
+            <i data-lucide="server" class="w-3.5 h-3.5 text-amber-400"></i>
+          </div>
+          <div class="text-lg font-bold font-orbitron text-white">Postgres / Supabase</div>
+          <div class="text-xs text-slate-400 mt-1">Live Sync & PGVector</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TECH STACK MATRIX (Section 02) -->
+    <section id="skills" class="pt-32">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="font-mono text-cyan-400 text-sm font-semibold tracking-widest">[ 02 // STACK_MATRIX ]</span>
+        <div class="h-[1px] flex-1 bg-gradient-to-r from-cyan-500/40 to-transparent"></div>
+      </div>
+      <h2 class="font-orbitron text-3xl sm:text-4xl font-extrabold tracking-tight mb-12 text-white">
+        CORE TECH ARSENAL <span class="text-cyan-400">.</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono">
+        
+        <!-- 1. AI Engineer & LLMs -->
+        <div class="dark-neon-card p-7 rounded-2xl group">
+          <div class="flex items-center justify-between mb-5">
+            <div class="p-3 rounded-xl bg-cyan-950/80 text-cyan-400 border border-cyan-500/40 group-hover:scale-110 transition-transform">
+              <i data-lucide="brain-circuit" class="w-7 h-7"></i>
+            </div>
+            <span class="text-xs text-cyan-300 font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-500/30">MOD_01</span>
+          </div>
+          <h3 class="font-orbitron text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">1. AI Engineer & LLM</h3>
+          <p class="font-sans text-sm text-slate-300 leading-relaxed mb-6">
+            OpenAI API 연동, Agentic Workflow 설계, 구조화된 프롬프트 체이닝 및 Function Calling 시스템 구축
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-cyan-500/40 text-cyan-300">OpenAI API</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-cyan-500/40 text-cyan-300">Agentic Workflow</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-cyan-500/40 text-cyan-300">LangChain</span>
+          </div>
+        </div>
+
+        <!-- 2. Web Crawling -->
+        <div class="dark-neon-card p-7 rounded-2xl group">
+          <div class="flex items-center justify-between mb-5">
+            <div class="p-3 rounded-xl bg-sky-950/80 text-sky-400 border border-sky-500/40 group-hover:scale-110 transition-transform">
+              <i data-lucide="globe" class="w-7 h-7"></i>
+            </div>
+            <span class="text-xs text-sky-300 font-mono px-2.5 py-1 rounded bg-sky-950/80 border border-sky-500/30">MOD_02</span>
+          </div>
+          <h3 class="font-orbitron text-xl font-bold text-white mb-2 group-hover:text-sky-300 transition-colors">2. 웹 크롤링 & 자동 수집</h3>
+          <p class="font-sans text-sm text-slate-300 leading-relaxed mb-6">
+            Playwright & BeautifulSoup 기반 대규모 동적 페이지 스크래핑, 봇 차단 우회 및 비동기 수집 파이프라인
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-sky-500/40 text-sky-300">Playwright</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-sky-500/40 text-sky-300">Asyncio</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-sky-500/40 text-sky-300">BeautifulSoup</span>
+          </div>
+        </div>
+
+        <!-- 3. OCR Extraction -->
+        <div class="dark-neon-card p-7 rounded-2xl group">
+          <div class="flex items-center justify-between mb-5">
+            <div class="p-3 rounded-xl bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 group-hover:scale-110 transition-transform">
+              <i data-lucide="file-search" class="w-7 h-7"></i>
+            </div>
+            <span class="text-xs text-emerald-300 font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-500/30">MOD_03</span>
+          </div>
+          <h3 class="font-orbitron text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">3. OCR & 비정형 파싱</h3>
+          <p class="font-sans text-sm text-slate-300 leading-relaxed mb-6">
+            문서 및 영수증 이미지 텍스트 인식, GPT Vision 결합 정밀 데이터 정제 및 JSON 스키마 변환
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-emerald-500/40 text-emerald-300">Vision OCR</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-emerald-500/40 text-emerald-300">GPT Vision</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-emerald-500/40 text-emerald-300">JSON Schema</span>
+          </div>
+        </div>
+
+        <!-- 4. n8n Automation -->
+        <div class="dark-neon-card p-7 rounded-2xl group">
+          <div class="flex items-center justify-between mb-5">
+            <div class="p-3 rounded-xl bg-fuchsia-950/80 text-fuchsia-400 border border-fuchsia-500/40 group-hover:scale-110 transition-transform">
+              <i data-lucide="workflow" class="w-7 h-7"></i>
+            </div>
+            <span class="text-xs text-fuchsia-300 font-mono px-2.5 py-1 rounded bg-fuchsia-950/80 border border-fuchsia-500/30">MOD_04</span>
+          </div>
+          <h3 class="font-orbitron text-xl font-bold text-white mb-2 group-hover:text-fuchsia-300 transition-colors">4. n8n 오케스트레이션</h3>
+          <p class="font-sans text-sm text-slate-300 leading-relaxed mb-6">
+            웹훅 기반 이벤트 트리거, Telegram/Slack 봇 연동, 조건 분기 로직 및 엔드투엔드 비즈니스 자동화
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-fuchsia-500/40 text-fuchsia-300">n8n Automation</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-fuchsia-500/40 text-fuchsia-300">Webhooks</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-fuchsia-500/40 text-fuchsia-300">Telegram Bot</span>
+          </div>
+        </div>
+
+        <!-- 5. RAG & Pinecone -->
+        <div class="dark-neon-card p-7 rounded-2xl group">
+          <div class="flex items-center justify-between mb-5">
+            <div class="p-3 rounded-xl bg-pink-950/80 text-pink-400 border border-pink-500/40 group-hover:scale-110 transition-transform">
+              <i data-lucide="database-zap" class="w-7 h-7"></i>
+            </div>
+            <span class="text-xs text-pink-300 font-mono px-2.5 py-1 rounded bg-pink-950/80 border border-pink-500/30">MOD_05</span>
+          </div>
+          <h3 class="font-orbitron text-xl font-bold text-white mb-2 group-hover:text-pink-300 transition-colors">5. RAG & Pinecone Vector DB</h3>
+          <p class="font-sans text-sm text-slate-300 leading-relaxed mb-6">
+            청킹 최적화, OpenAI 임베딩 생성, Pinecone 하이브리드 검색 및 환각 방지 지식 검색 엔진 구축
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-pink-500/40 text-pink-300">Pinecone DB</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-pink-500/40 text-pink-300">Embeddings</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-pink-500/40 text-pink-300">Hybrid Search</span>
+          </div>
+        </div>
+
+        <!-- 6. SQL & Supabase -->
+        <div class="dark-neon-card p-7 rounded-2xl group">
+          <div class="flex items-center justify-between mb-5">
+            <div class="p-3 rounded-xl bg-amber-950/80 text-amber-400 border border-amber-500/40 group-hover:scale-110 transition-transform">
+              <i data-lucide="server" class="w-7 h-7"></i>
+            </div>
+            <span class="text-xs text-amber-300 font-mono px-2.5 py-1 rounded bg-amber-950/80 border border-amber-500/30">MOD_06</span>
+          </div>
+          <h3 class="font-orbitron text-xl font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">6. SQL / PostgreSQL / Supabase</h3>
+          <p class="font-sans text-sm text-slate-300 leading-relaxed mb-6">
+            관계형 DB 스키마 설계, 복합 쿼리 최적화, Supabase 실시간 동기화 및 pgvector 기반 데이터 인덱싱
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-amber-500/40 text-amber-300">PostgreSQL</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-amber-500/40 text-amber-300">Supabase</span>
+            <span class="px-2.5 py-1 rounded bg-slate-900 border border-amber-500/40 text-amber-300">pgvector</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PIPELINE WORKFLOW (Section 03) -->
+    <section id="pipeline" class="pt-32">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="font-mono text-cyan-400 text-sm font-semibold tracking-widest">[ 03 // ARCHITECTURE_FLOW ]</span>
+        <div class="h-[1px] flex-1 bg-gradient-to-r from-cyan-500/40 to-transparent"></div>
+      </div>
+      <h2 class="font-orbitron text-3xl sm:text-4xl font-extrabold tracking-tight mb-12 text-white">
+        NEURAL PIPELINE FLOW <span class="text-fuchsia-400">.</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+        <div class="dark-neon-card p-6 rounded-2xl relative">
+          <div class="font-mono text-cyan-400 text-xs font-bold mb-2">01_INGESTION</div>
+          <h4 class="font-orbitron text-lg font-bold text-white mb-2">수집 및 비정형 추출</h4>
+          <p class="text-xs text-slate-300 leading-relaxed font-sans">
+            Playwright 웹 크롤러 & Vision OCR로 웹 데이터 및 문서 이미지 수집 및 실시간 정제
+          </p>
+          <div class="mt-4 text-[11px] font-mono text-cyan-300 flex items-center gap-1">
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> Stream to Chunker
+          </div>
+        </div>
+
+        <div class="dark-neon-card p-6 rounded-2xl relative">
+          <div class="font-mono text-cyan-400 text-xs font-bold mb-2">02_VECTORIZE</div>
+          <h4 class="font-orbitron text-lg font-bold text-white mb-2">임베딩 & 벡터 DB</h4>
+          <p class="text-xs text-slate-300 leading-relaxed font-sans">
+            정제된 텍스트 청크를 임베딩 변환 후 Pinecone / Supabase pgvector에 실시간 색인
+          </p>
+          <div class="mt-4 text-[11px] font-mono text-cyan-300 flex items-center gap-1">
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> Index Ready
+          </div>
+        </div>
+
+        <div class="dark-neon-card p-6 rounded-2xl relative">
+          <div class="font-mono text-fuchsia-400 text-xs font-bold mb-2">03_ORCHESTRATE</div>
+          <h4 class="font-orbitron text-lg font-bold text-white mb-2">n8n & LLM Logic</h4>
+          <p class="text-xs text-slate-300 leading-relaxed font-sans">
+            n8n 워크플로우를 통한 웹훅 수신, 프롬프트 파이프라인, RAG 검색 및 멀티턴 응답 생성
+          </p>
+          <div class="mt-4 text-[11px] font-mono text-fuchsia-300 flex items-center gap-1">
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> Dispatch Payload
+          </div>
+        </div>
+
+        <div class="dark-neon-card p-6 rounded-2xl relative">
+          <div class="font-mono text-emerald-400 text-xs font-bold mb-2">04_SERVING</div>
+          <h4 class="font-orbitron text-lg font-bold text-white mb-2">DB 적재 & 서빙</h4>
+          <p class="text-xs text-slate-300 leading-relaxed font-sans">
+            PostgreSQL 상태 로깅 및 Slack, Telegram, Web Dashboard로 자동 실시간 배포
+          </p>
+          <div class="mt-4 text-[11px] font-mono text-emerald-300 flex items-center gap-1">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Output Active
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE PROJECT PORTFOLIO (Section 04) -->
+    <section id="projects" class="pt-32">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="font-mono text-cyan-400 text-sm font-semibold tracking-widest">[ 04 // DEPLOYED_PROJECTS ]</span>
+            <div class="h-[1px] w-24 bg-gradient-to-r from-cyan-500/40 to-transparent"></div>
+          </div>
+          <h2 class="font-orbitron text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            SYSTEM ARCHITECTURES <span class="text-cyan-400">.</span>
+          </h2>
+        </div>
+
+        <!-- Interactive Category Filter -->
+        <div class="flex flex-wrap gap-2 mt-6 md:mt-0 font-mono text-xs">
+          <button class="filter-btn active px-4 py-2 rounded-lg bg-cyan-500 text-black font-bold border border-cyan-400 shadow-[0_0_15px_rgba(0,240,255,0.4)]" data-category="all">ALL_SYSTEMS</button>
+          <button class="filter-btn px-4 py-2 rounded-lg bg-slate-900 text-slate-400 border border-slate-700 hover:border-cyan-500/50 hover:text-cyan-300" data-category="rag">RAG // LLM</button>
+          <button class="filter-btn px-4 py-2 rounded-lg bg-slate-900 text-slate-400 border border-slate-700 hover:border-cyan-500/50 hover:text-cyan-300" data-category="n8n">n8n_AUTOMATION</button>
+          <button class="filter-btn px-4 py-2 rounded-lg bg-slate-900 text-slate-400 border border-slate-700 hover:border-cyan-500/50 hover:text-cyan-300" data-category="data">CRAWL // OCR</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono" id="projectGrid">
+        
+        <!-- Project 1: Pinecone RAG Assistant -->
+        <div class="project-card dark-neon-card rounded-2xl p-6 flex flex-col justify-between" data-category="rag">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs px-2.5 py-1 rounded bg-pink-950/80 border border-pink-500/40 text-pink-300 font-bold">RAG_KNOWLEDGE</span>
+              <span class="text-[11px] text-slate-400">SYS_ID: 0x88A</span>
+            </div>
+            <h3 class="font-orbitron text-lg font-bold text-white mb-3">지능형 사내 문서 RAG 검색 챗봇</h3>
+            <p class="font-sans text-xs text-slate-300 leading-relaxed mb-6">
+              사내 비정형 문서 및 매뉴얼 데이터를 임베딩하여 Pinecone 벡터 DB에 적재, 환각을 통제한 실시간 질의응답 시스템
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-cyan-300 border border-cyan-800">Pinecone</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-cyan-300 border border-cyan-800">OpenAI</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-cyan-300 border border-cyan-800">LangChain</span>
+          </div>
+        </div>
+
+        <!-- Project 2: n8n Auto Bot -->
+        <div class="project-card dark-neon-card rounded-2xl p-6 flex flex-col justify-between" data-category="n8n">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs px-2.5 py-1 rounded bg-fuchsia-950/80 border border-fuchsia-500/40 text-fuchsia-300 font-bold">n8n_WORKFLOW</span>
+              <span class="text-[11px] text-slate-400">SYS_ID: 0x88B</span>
+            </div>
+            <h3 class="font-orbitron text-lg font-bold text-white mb-3">n8n 기반 상태 모니터링 & 텔레그램 봇</h3>
+            <p class="font-sans text-xs text-slate-300 leading-relaxed mb-6">
+              웹훅 이벤트 수신 및 스케줄러 기반 사용자 상태 로깅, 조건별 LLM 맞춤 응답 생성 및 메신저 자동 발송
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-fuchsia-300 border border-fuchsia-800">n8n</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-fuchsia-300 border border-fuchsia-800">Telegram API</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-fuchsia-300 border border-fuchsia-800">Supabase</span>
+          </div>
+        </div>
+
+        <!-- Project 3: OCR Data Extraction -->
+        <div class="project-card dark-neon-card rounded-2xl p-6 flex flex-col justify-between" data-category="data">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-bold">OCR_EXTRACTOR</span>
+              <span class="text-[11px] text-slate-400">SYS_ID: 0x88C</span>
+            </div>
+            <h3 class="font-orbitron text-lg font-bold text-white mb-3">영수증 & 문서 OCR 자동 파싱 파이프라인</h3>
+            <p class="font-sans text-xs text-slate-300 leading-relaxed mb-6">
+              문서/영수증 이미지에서 텍스트를 인식하고 GPT Vision을 통해 구조화된 JSON 데이터로 파싱 후 DB 자동 적재
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-emerald-300 border border-emerald-800">Vision OCR</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-emerald-300 border border-emerald-800">PostgreSQL</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-emerald-300 border border-emerald-800">Python</span>
+          </div>
+        </div>
+
+        <!-- Project 4: Crawling Engine -->
+        <div class="project-card dark-neon-card rounded-2xl p-6 flex flex-col justify-between" data-category="data">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs px-2.5 py-1 rounded bg-sky-950/80 border border-sky-500/40 text-sky-300 font-bold">CRAWL_ENGINE</span>
+              <span class="text-[11px] text-slate-400">SYS_ID: 0x88D</span>
+            </div>
+            <h3 class="font-orbitron text-lg font-bold text-white mb-3">이커머스 & 뉴스 실시간 수집 크롤러</h3>
+            <p class="font-sans text-xs text-slate-300 leading-relaxed mb-6">
+              Playwright 기반 동적 페이지 스크래핑, 안티 봇 우회 및 대규모 데이터 비동기 정제 및 적재
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-sky-300 border border-sky-800">Playwright</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-sky-300 border border-sky-800">Asyncio</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-sky-300 border border-sky-800">Pandas</span>
+          </div>
+        </div>
+
+        <!-- Project 5: Supabase & n8n Live DB -->
+        <div class="project-card dark-neon-card rounded-2xl p-6 flex flex-col justify-between" data-category="n8n">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs px-2.5 py-1 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold">SQL_AUTOMATION</span>
+              <span class="text-[11px] text-slate-400">SYS_ID: 0x88E</span>
+            </div>
+            <h3 class="font-orbitron text-lg font-bold text-white mb-3">Slack & SQL 자동 적재 로그 시스템</h3>
+            <p class="font-sans text-xs text-slate-300 leading-relaxed mb-6">
+              Slack 입력을 n8n 웹훅으로 트리거, 카테고리 태깅 후 Supabase PostgreSQL에 실시간 적재 및 통계 리포트 생성
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-amber-300 border border-amber-800">Supabase</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-amber-300 border border-amber-800">n8n</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-amber-300 border border-amber-800">Slack API</span>
+          </div>
+        </div>
+
+        <!-- Project 6: Autonomous Agent -->
+        <div class="project-card dark-neon-card rounded-2xl p-6 flex flex-col justify-between" data-category="rag">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-bold">AI_AGENT</span>
+              <span class="text-[11px] text-slate-400">SYS_ID: 0x88F</span>
+            </div>
+            <h3 class="font-orbitron text-lg font-bold text-white mb-3">멀티소스 통합 AI 어시스턴트</h3>
+            <p class="font-sans text-xs text-slate-300 leading-relaxed mb-6">
+              웹 크롤링 데이터 + 벡터 검색 + 데이터베이스를 결합하여 사용자 질문에 적합한 도구를 스스로 호출하는 지능형 에이전트
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-cyan-300 border border-cyan-800">Pinecone</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-cyan-300 border border-cyan-800">Supabase</span>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-cyan-300 border border-cyan-800">n8n</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT (Section 05) -->
+    <section id="contact" class="pt-32">
+      <div class="dark-neon-card p-8 md:p-12 rounded-3xl text-center relative overflow-hidden border border-cyan-500/40">
+        <span class="font-mono text-cyan-400 text-xs font-semibold tracking-widest block mb-3">[ TERMINAL_UPLINK ]</span>
+        <h2 class="font-orbitron text-3xl sm:text-5xl font-black text-white mb-6">
+          CONNECT WITH THE CORE <span class="text-cyan-400">.</span>
+        </h2>
+        <p class="font-sans text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed">
+          RAG 파이프라인, OCR 파싱, n8n 비즈니스 자동화 아키텍처 협업 및 프로젝트 문의를 환영합니다.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 font-orbitron text-xs">
+          <a href="mailto:contact@example.com" class="px-8 py-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold tracking-wider transition-all shadow-[0_0_25px_rgba(0,240,255,0.5)] flex items-center gap-2">
+            <i data-lucide="send" class="w-4 h-4"></i> TRANSMIT_EMAIL
+          </a>
+          <a href="https://github.com" target="_blank" class="px-8 py-4 rounded-xl dark-neon-card text-white hover:text-cyan-400 font-bold tracking-wider transition-all flex items-center gap-2">
+            <i data-lucide="github" class="w-4 h-4"></i> GITHUB_REPOSITORY
+          </a>
+        </div>
+
+        <div class="mt-12 pt-8 border-t border-slate-800/80 font-mono text-xs text-slate-500">
+          SYSTEM STATUS: 100% OPERATIONAL // © 2026 AI ENGINEER PORTFOLIO.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Script -->
+  <script>
+    lucide.createIcons();
+
+    // Filtering
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('active', 'bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_15px_rgba(0,240,255,0.4)]');
+          b.classList.add('bg-slate-900', 'text-slate-400', 'border-slate-700');
+        });
+
+        btn.classList.add('active', 'bg-cyan-500', 'text-black', 'border-cyan-400', 'shadow-[0_0_15px_rgba(0,240,255,0.4)]');
+        btn.classList.remove('bg-slate-900', 'text-slate-400', 'border-slate-700');
+
+        const cat = btn.getAttribute('data-category');
+        projectCards.forEach(card => {
+          if (cat === 'all' || card.getAttribute('data-category') === cat) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Particles
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.6;
+        this.speedY = (Math.random() - 0.5) * 0.6;
+        this.color = Math.random() > 0.4 ? '#00f0ff' : '#d946ef';
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const num = Math.floor(window.innerWidth / 18);
+      for (let i = 0; i < num; i++) {
+        particles.push(new Particle());
+      }
+    }
+    initParticles();
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 110) {
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 110)})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
 </body>
 </html>
